@@ -184,12 +184,18 @@ class Socket
                         
                         // Run injected functions
                         if($trigger){
+
+                            // Decode pushed json data
+                            $pushData = json_decode($trigger);
+
+                            // The key is the trigger function
+                            $key = key($pushData);
                             
                             // Execute the trigger
                             //if(array_key_exists($trigger, $this->triggers)){
-                            $push = call_user_func($this->triggers[$trigger]);
+                            $push = call_user_func($this->triggers[$key], $pushData);
                             ////}
-                            @fwrite($send->resource, $this->encode($push));
+                            @fwrite($send->resource, $this->encode($trigger));
                         }
                     }
 

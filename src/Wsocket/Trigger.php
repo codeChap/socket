@@ -24,13 +24,16 @@ class Trigger
     /**
      * @param string Origional trigger string
      */
-    public function __construct($function)
+    public function __construct($trigger, array $dataArray = array('testing'))
     {
         $fp = fsockopen($this->config['host'], $this->config['port'], $errno, $errstr, 30);
         if ( ! $fp) {
             echo "$errstr ($errno)<br />\n";
         } else {
-            fwrite($fp, $function);
+
+            $data = array($trigger => $dataArray);
+
+            fwrite($fp, json_encode($data));
             fclose($fp);
         }
     }
